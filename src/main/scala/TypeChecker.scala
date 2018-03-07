@@ -17,6 +17,13 @@ object TypeChecker {
 
   def typeOf(prog: Expr, env: Map[String, ExprType]): ExprType = prog match
     {
+    case Nat(a)  => Nat
+    case Bool(a) => Bool
+    /*case Prod(a, b) => a = typeOf(a, b)
+      b = typeOf(b, b)
+    case Fun (a, b) => if (typeOf(a) == Nat) =>
+    case Sum (a, b) =>
+    case Prod (a, b) =>*/
 
     }
 
