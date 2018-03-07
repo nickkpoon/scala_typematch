@@ -19,12 +19,20 @@ object TypeChecker {
     {
     case Nat(a)  => Nat
     case Bool(a) => Bool
-    /*case Prod(a, b) => a = typeOf(a, b)
-      b = typeOf(b, b)
-    case Fun (a, b) => if (typeOf(a) == Nat) =>
-    case Sum (a, b) =>
-    case Prod (a, b) =>*/
 
+    /*case App(a, b)
+      if (typeOf(a, env) == Nat) && typeOf(b, env) == Nat => Sum(typeOf(a, env),typeOf(a, env))
+
+    case App(a, b)
+      if (typeOf(a, env) == Nat) && typeOf(b, env) == Bool =>*/
+
+    case Inl(a, b)
+      if typeOf(a, env) == Nat => Sum(typeOf(a, env),typeOf(a, env))
+    case Snd(a)
+      if typeOf(a, env) == Nat => Prod(typeOf(a, env),typeOf(a, env))
+
+    case Fst(a)
+      if typeOf(a, env) == Nat => Prod(typeOf(a, env),typeOf(a, env))
     }
 
 
