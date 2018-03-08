@@ -62,6 +62,22 @@ object TypeChecker {
     case Inl(a, b) => Sum(typeOf(a, env),b)
 
     case Inr(a, b) => Sum(b, typeOf(a, env))
+
+    case Case(a, b, c, d, e) => typeOf(a, env)
+      match
+      {
+        case Sum(ab, bc) =>
+          {
+            val sum_left = typeOf(c, env + (b -> ab))
+            val sum_right = typeOf(e, env + (d -> bc))
+
+            if (sum_left == sum_right)
+              sum_left
+            else
+              throw TypeException("Case Error 1!")
+          }
+        case _ => throw TypeException("Case Error 2!")
+      }
     /*case Snd(a)
       if typeOf(a, env) == Prod(Bool, Nat) => Nat*/
     /*case Lam(a, b, c)
