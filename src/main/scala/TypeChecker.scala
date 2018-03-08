@@ -28,38 +28,36 @@ object TypeChecker {
     case App(a, b)
       if (typeOf(a, env) == Nat) && typeOf(b, env) == Bool =>*/
 
-    case App(a, b) => typeOf(a, env) match
-    {
-      case Fun(c, d) =>
+    case App(a, b) => typeOf(a, env)
+      match
       {
-          if (typeOf(b, env) == c)
-            Fun(typeOf(a, env), typeOf(b, env))
-          else
-
-          throw TypeException("App Error 1!")
-
+        case Fun(c, d) =>
+        {
+            if (typeOf(b, env) == c || typeOf(a, env) == c)
+              d
+            else
+              throw TypeException("App Error 1!")
+        }
+        case _ => throw TypeException("App Error 2!")
       }
-      case _ => throw TypeException("App Error 2!")
-
-    }
 
     case Lam(a,b,c) => Fun(b, typeOf(c, env + (a->b)))
 
     case Pair(a,b) => Prod(typeOf(a, env), typeOf(b, env))
 
     case Fst(a) => typeOf(a, env)
-    match
-    {
-      case Prod(c, d) => c
-      case _ => throw TypeException("Fst Error!")
-    }
+      match
+      {
+        case Prod(c, d) => c
+        case _ => throw TypeException("Fst Error!")
+      }
 
     case Snd(a) => typeOf(a, env)
       match
       {
-      case Prod(c, d) => d
-      case _ => throw TypeException("Snd Error!")
-    }
+        case Prod(c, d) => d
+        case _ => throw TypeException("Snd Error!")
+      }
 
     case Inl(a, b) => Sum(typeOf(a, env),b)
 
