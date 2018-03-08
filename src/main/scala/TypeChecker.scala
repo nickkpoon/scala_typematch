@@ -14,11 +14,12 @@ object TypeChecker {
 
 
   //def typeOf(prog: Expr, env: Map[String, ExprType]): ExprType = ???
-
   def typeOf(prog: Expr, env: Map[String, ExprType]): ExprType = prog match
     {
-    case Nat(a)  => Nat
-    case Bool(a) => Bool
+
+
+    case Nat(_)  => Nat
+    case Bool(_) => Bool
 
     /*case App(a, b)
       if (typeOf(a, env) == Nat) && typeOf(b, env) == Nat => Sum(typeOf(a, env),typeOf(a, env))
@@ -27,12 +28,26 @@ object TypeChecker {
       if (typeOf(a, env) == Nat) && typeOf(b, env) == Bool =>*/
 
     case Inl(a, b)
-      if typeOf(a, env) == Nat => Sum(typeOf(a, env),typeOf(a, env))
-    case Snd(a)
-      if typeOf(a, env) == Nat => Prod(typeOf(a, env),typeOf(a, env))
+      if typeOf(a, env) == Nat => Sum(Nat,Bool)
+    case Inl(a, b)
+      if typeOf(a, env) == Bool => Sum(Bool, Nat)
+    case Inr(a, b)
+      if typeOf(a, env) == Nat => Sum(Bool, Nat)
+    case Inr(a, b)
+      if typeOf(a, env) == Bool => Sum(Nat, Bool)
 
     case Fst(a)
-      if typeOf(a, env) == Nat => Prod(typeOf(a, env),typeOf(a, env))
+      if typeOf(a, env) == Prod(Nat, Bool) => Nat
+    case Fst(a)
+      if typeOf(a, env) == Prod(Bool, Nat) => Bool
+
+    case Snd(a)
+      if typeOf(a, env) == Prod(Nat, Bool) => Bool
+    case Snd(a)
+      if typeOf(a, env) == Prod(Bool, Nat) => Nat
+
+
+
     }
 
 
