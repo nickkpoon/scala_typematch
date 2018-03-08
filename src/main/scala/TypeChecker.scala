@@ -28,11 +28,6 @@ object TypeChecker {
     case App(a, b)
       if (typeOf(a, env) == Nat) && typeOf(b, env) == Bool =>*/
 
-    case Inl(a, b) => Sum(typeOf(a, env),b)
-    /*case Inl(a, b)
-      if typeOf(a, env) == Bool => Sum(Bool, b)*/
-    case Inr(a, b) => Sum(b, typeOf(a, env))
-
     case App(a, b) => typeOf(a, env) match
     {
       case Fun(c, d) =>
@@ -40,6 +35,7 @@ object TypeChecker {
           if (typeOf(b, env) == c)
             Fun(typeOf(a, env), typeOf(b, env))
           else
+
           throw TypeException("App Error 1!")
 
       }
@@ -47,15 +43,7 @@ object TypeChecker {
 
     }
 
-     /* if (typeOf(a, env) != typeOf(b, env))
-        throw TypeException("App Error!")
-      else
-        Fun(typeOf(a, env), typeOf(b, env))*/
-    /*case Inr(a, b)
-      if typeOf(a, env) == Bool => Sum(Nat, Bool)*/
-
-    /*case Fst(a) => Prod(typeOf(a, env), _)
-      if typeOf(a, env) == Prod(typeOf(a, env), _) => typeOf(a, env)*/
+    case Lam(a,b,c) => Fun(b, typeOf(c, env + (a->b)))
 
     case Pair(a,b) => Prod(typeOf(a, env), typeOf(b, env))
 
@@ -65,8 +53,6 @@ object TypeChecker {
       case Prod(c, d) => c
       case _ => throw TypeException("Fst Error!")
     }
-    /*case Fst(a)
-      if typeOf(a, env) == Prod(Bool, _) => Bool*/
 
     case Snd(a) => typeOf(a, env)
       match
@@ -74,6 +60,10 @@ object TypeChecker {
       case Prod(c, d) => d
       case _ => throw TypeException("Snd Error!")
     }
+
+    case Inl(a, b) => Sum(typeOf(a, env),b)
+
+    case Inr(a, b) => Sum(b, typeOf(a, env))
     /*case Snd(a)
       if typeOf(a, env) == Prod(Bool, Nat) => Nat*/
     /*case Lam(a, b, c)
@@ -81,7 +71,7 @@ object TypeChecker {
 
     //case Pair(a, b) => Prod(typeOf(a, env), typeOf(b, env))
 
-    case Lam(a,b,c) => Fun(b, typeOf(c, env + (a->b)))
+
     //case Var(string) =>
 
 
